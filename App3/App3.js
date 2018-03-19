@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
+var username = 'Fary1';
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -25,6 +26,7 @@ app.get('/users', function (req, res) {
 app.get('/user/:name', function (req, res) {
    
     var name = req.params.name;
+    username = name;
     console.log(name);
    
     queryUser(function(err,result){
@@ -45,7 +47,7 @@ function queryAllUser(callback) {
 
 function queryUser(callback) {
     var json = '';
-    connection.query("SELECT * FROM user WHERE Name = 'Fary1'", function (err, rows, fields) {
+    connection.query("SELECT * FROM user WHERE Name = '"+username+"'", function (err, rows, fields) {
         if (err) throw err;
         json = JSON.stringify(rows);
         callback(null, json);
