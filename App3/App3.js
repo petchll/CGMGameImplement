@@ -23,15 +23,15 @@ app.get('/users', function (req, res) {
     })
    // res.end('hello');
 });
-app.get('/user/:name', function (req, res) {
+app.get('/user/:name', function (req, res,username) {
    
     var name = req.params.name;
-    username = name;
+
     console.log(name);
    
     queryUser(function(err,result){
         res.end(result);
-    })
+    },name)
 });
 var server = app.listen(8081, function () {
     console.log('Sever : Running');
@@ -45,9 +45,10 @@ function queryAllUser(callback) {
     })
 }
 
-function queryUser(callback) {
+function queryUser(callback,name) {
     var json = '';
-    connection.query("SELECT * FROM user WHERE Name = '"+username+"'", function (err, rows, fields) {
+    connection.query('SELECT * FROM user WHERE Name =?',name,
+     function (err, rows, fields) {
         if (err) throw err;
         json = JSON.stringify(rows);
         callback(null, json);
